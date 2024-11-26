@@ -1,1 +1,10 @@
-application.properties 내 정보를 본인에 맞게 수정하여 사용해야 합니다.
+## Currency_exchange_project
+
+this project is to study spring jpa 
+
+<details>
+<summary>overview</summary>
+  1. API document
+  |description||
+  2. ERD 
+</details>
