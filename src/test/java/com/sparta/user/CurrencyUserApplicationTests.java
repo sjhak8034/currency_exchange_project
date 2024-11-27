@@ -1,4 +1,4 @@
-package com.sparta.currency_user;
+package com.sparta.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

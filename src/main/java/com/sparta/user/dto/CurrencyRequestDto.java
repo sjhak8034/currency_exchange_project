@@ -1,6 +1,6 @@
-package com.sparta.currency_user.dto;
+package com.sparta.user.dto;
 
-import com.sparta.currency_user.entity.Currency;
+import com.sparta.user.entity.Currency;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -10,7 +10,7 @@ public class CurrencyRequestDto {
     private String currencyName;
     private BigDecimal exchangeRate;
     private String symbol;
-
+    private Currency currency;
     public Currency toEntity() {
         return new Currency(
                 this.currencyName,
