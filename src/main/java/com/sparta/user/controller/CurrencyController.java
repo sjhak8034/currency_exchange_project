@@ -1,8 +1,8 @@
-package com.sparta.currency_user.controller;
+package com.sparta.user.controller;
 
-import com.sparta.currency_user.dto.CurrencyRequestDto;
-import com.sparta.currency_user.dto.CurrencyResponseDto;
-import com.sparta.currency_user.service.CurrencyService;
+import com.sparta.user.dto.CurrencyRequestDto;
+import com.sparta.user.dto.CurrencyResponseDto;
+import com.sparta.user.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
