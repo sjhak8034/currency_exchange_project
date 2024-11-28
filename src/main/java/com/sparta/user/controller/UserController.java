@@ -1,39 +1,50 @@
 package com.sparta.user.controller;
 
-import com.sparta.user.dto.UserRequestDto;
-import com.sparta.user.dto.UserResponseDto;
+import com.sparta.user.dto.delete.DeleteUserRequestDto;
+import com.sparta.user.dto.delete.DeleteUserServiceDto;
+import com.sparta.user.dto.signup.SignUpServiceDto;
+import com.sparta.user.dto.signup.SignupRequestDto;
+import com.sparta.user.dto.update.UpdateUserRequestDto;
+import com.sparta.user.dto.update.UpdateUserServiceDto;
 import com.sparta.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/currency/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<UserResponseDto>> findUsers() {
-        return ResponseEntity.ok().body(userService.findAll());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> findUser(@PathVariable Long id) {
-        return ResponseEntity.ok().body(userService.findById(id));
-    }
-
     @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto) {
-        return ResponseEntity.ok().body(userService.save(userRequestDto));
+    public ResponseEntity<Void> createUser(@RequestBody @Valid SignupRequestDto body, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session.getAttribute("userId") != null){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그아웃 해주세요");
+        }
+        userService.save(new SignUpServiceDto(body.getEmail(),body.getPassword(),body.getUserName()));
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        userService.deleteUserById(id);
-        return ResponseEntity.ok().body("정상적으로 삭제되었습니다.");
+    @PutMapping("/profile/{userId}")
+    public ResponseEntity<Void> updateUser(@RequestBody @Valid UpdateUserRequestDto body, @PathVariable(name = "userId") Long userId ,HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        userService.update(new UpdateUserServiceDto((long)session.getAttribute("userId"), body.getUserName(),body.getBeforePassword(), body.getAfterPassword()));
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("{userId}")
+    public ResponseEntity<Void> deleteUser(@RequestBody @Valid DeleteUserRequestDto body, @PathVariable(name = "userId") Long userId,HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        userService.delete(new DeleteUserServiceDto((long)session.getAttribute("userId"),body.getPassword()));
+        session.invalidate();
+        return ResponseEntity.ok().build();
     }
 }
