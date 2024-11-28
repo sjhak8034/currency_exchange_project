@@ -1,7 +1,7 @@
 package com.sparta.record.entity;
 
 import com.sparta.common.entity.TimeBase;
-import com.sparta.exchange.entity.Currency;
+import com.sparta.currency.entity.Currency;
 import com.sparta.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
