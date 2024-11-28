@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 public class ExchangeRecord extends TimeBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "exchange_record_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,6 +53,6 @@ public class ExchangeRecord extends TimeBase {
         isCancelled = Boolean.TRUE;
     }
 
-    public ExchangeRecord() {}
+    protected ExchangeRecord() {}
 
 }

@@ -15,6 +15,7 @@ import java.util.List;
 public class User extends TimeBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false)
@@ -53,5 +54,5 @@ public class User extends TimeBase {
         this.password = newPassword;
     }
 
-    public User() {}
+    protected User() {}
 }

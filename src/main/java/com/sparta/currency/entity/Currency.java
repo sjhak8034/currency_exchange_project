@@ -24,6 +24,7 @@ import java.util.List;
 public class Currency extends TimeBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "currency_id")
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -46,5 +47,5 @@ public class Currency extends TimeBase {
         this.symbol = symbol;
     }
 
-    public Currency() {}
+    protected Currency() {}
 }
