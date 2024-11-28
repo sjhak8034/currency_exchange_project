@@ -1,42 +1,61 @@
 package com.sparta.user.service;
 
-import com.sparta.user.dto.UserRequestDto;
-import com.sparta.user.dto.UserResponseDto;
+import com.sparta.common.config.PasswordEncoder;
+import com.sparta.user.dto.delete.DeleteUserServiceDto;
+import com.sparta.user.dto.signup.SignUpServiceDto;
+import com.sparta.user.dto.update.UpdateUserServiceDto;
 import com.sparta.user.entity.User;
 import com.sparta.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserResponseDto findById(Long id) {
-        return new UserResponseDto(findUserById(id));
+    /**
+     * 유저 등록 메소드
+     * @param dto user의 name email paassword 정보가 담긴 dto
+     */
+    public void save(SignUpServiceDto dto) {
+
+        User user = new User(dto.getUserName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
+
+        userRepository.save(user);
+
     }
 
-    public User findUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    /**
+     * 유저 정보 수정 메소드
+     * @param dto 변경할 정보 및 확인용 비밀번호가 담긴 dto
+     */
+    public void update(UpdateUserServiceDto dto) {
+        User updatableUser = userRepository.findByIdAndIsDeleted(dto.getId(), false);
+        if (updatableUser == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾지 못했습니다");
+        }
+        if(!passwordEncoder.matches(dto.getBeforePassword(), updatableUser.getPassword())){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
+        }
+        updatableUser.update(dto.getUsername(),passwordEncoder.encode(dto.getAfterPassword()));
+        userRepository.save(updatableUser);
     }
 
-    public List<UserResponseDto> findAll() {
-        return userRepository.findAll().stream().map(UserResponseDto::toDto).toList();
-    }
-
-    @Transactional
-    public UserResponseDto save(UserRequestDto userRequestDto) {
-        User savedUser = userRepository.save(userRequestDto.toEntity());
-        return new UserResponseDto(savedUser);
-    }
-
-    @Transactional
-    public void deleteUserById(Long id) {
-        this.findUserById(id);
-        userRepository.deleteById(id);
+    /**
+     * 유저 soft delete 메소드
+     * @param dto 삭제할 id 및 확인용 비밀번호 가 담긴 dto
+     */
+    public void delete(DeleteUserServiceDto dto) {
+        User deletalbeUser = userRepository.findByIdOrElseThrow(dto.getId());
+        if(!passwordEncoder.matches(dto.getPassword(), deletalbeUser.getPassword())){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
+        }
+        deletalbeUser.delete();
+        userRepository.save(deletalbeUser);
     }
 
 }

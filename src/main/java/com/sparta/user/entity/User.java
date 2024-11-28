@@ -1,8 +1,10 @@
 package com.sparta.user.entity;
 
 import com.sparta.common.entity.TimeBase;
+import com.sparta.record.entity.ExchangeRecord;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +23,14 @@ public class User extends TimeBase {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
     @Column
-    private boolean is_Deleted = Boolean.FALSE;
+    private Boolean isDeleted = false;
 
 
-    @OneToMany(mappedBy = "exchange_record_id")
+    @OneToMany(mappedBy = "user")
     private List<ExchangeRecord> exchangeRecords = new ArrayList<>();
 
 
@@ -39,11 +41,11 @@ public class User extends TimeBase {
     }
 
     public void delete() {
-        is_Deleted = true;
+        isDeleted = true;
     }
 
     public void recover() {
-        is_Deleted = false;
+        isDeleted = false;
     }
 
     public void update(String newName, String newPassword) {

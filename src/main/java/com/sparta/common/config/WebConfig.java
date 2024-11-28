@@ -1,6 +1,7 @@
 package com.sparta.common.config;
 
-import com.example.newsfeedproject.common.filter.LoginFilter;
+
+import com.sparta.common.filter.LoginFilter;
 import jakarta.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

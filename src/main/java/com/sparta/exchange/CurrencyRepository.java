@@ -1,6 +1,6 @@
-package com.sparta.user.repository;
+package com.sparta.exchange;
 
-import com.sparta.user.entity.Currency;
+import com.sparta.exchange.entity.Currency;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
