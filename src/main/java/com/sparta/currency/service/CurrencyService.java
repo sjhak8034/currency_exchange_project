@@ -5,6 +5,7 @@ import com.sparta.currency.dto.cancel.CancelExchangeServiceDto;
 import com.sparta.currency.dto.exchange.ExchangeResponseDto;
 import com.sparta.currency.dto.exchange.ExchangeServiceDto;
 
+import com.sparta.currency.dto.findall.FindAllCurrencyResponseDto;
 import com.sparta.currency.entity.Currency;
 import com.sparta.currency.repository.CurrencyRepository;
 import com.sparta.record.entity.ExchangeRecord;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -49,6 +51,11 @@ public class CurrencyService {
         exchangeRecord.cancel();
         exchangeRecordRepository.save(exchangeRecord);
         return new CancelExchangeResponseDto(exchangeRecord.getId());
+    }
+
+    public List<FindAllCurrencyResponseDto> findAllCurrency() {
+        return currencyRepository.findAllCurrencyData();
+
     }
 
 }

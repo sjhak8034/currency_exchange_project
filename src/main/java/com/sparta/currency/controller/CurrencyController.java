@@ -5,18 +5,22 @@ import com.sparta.currency.dto.cancel.CancelExchangeServiceDto;
 import com.sparta.currency.dto.exchange.ExchangeRequestDto;
 import com.sparta.currency.dto.exchange.ExchangeResponseDto;
 import com.sparta.currency.dto.exchange.ExchangeServiceDto;
+import com.sparta.currency.dto.findall.FindAllCurrencyResponseDto;
 import com.sparta.currency.service.CurrencyService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,6 +43,11 @@ public class CurrencyController {
         HttpSession session = request.getSession(false);
         CancelExchangeServiceDto serviceDto = new CancelExchangeServiceDto(currencyId, (Long)session.getAttribute("userId"));
         return ResponseEntity.ok(currencyService.cancel(serviceDto));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<FindAllCurrencyResponseDto>> cancelExchange () {
+        return ResponseEntity.ok(currencyService.findAllCurrency());
     }
 
 
