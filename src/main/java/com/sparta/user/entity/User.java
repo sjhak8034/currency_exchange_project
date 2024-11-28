@@ -30,7 +30,7 @@ public class User extends TimeBase {
     private Boolean isDeleted = false;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ExchangeRecord> exchangeRecords = new ArrayList<>();
 
 
