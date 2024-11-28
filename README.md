@@ -2,9 +2,7 @@
 
 this project is to study spring jpa 
 
-<details>
-<summary>overview</summary>
-  1. API document
-  |description||
-  2. ERD 
-</details>
+api 명세서 및 erd
+
+
+https://www.notion.so/currency-exchange-project-API-REFERENCE-14abf0381e01800b8a79da4ecbda12b1
