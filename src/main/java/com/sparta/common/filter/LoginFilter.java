@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.PatternMatchUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 //로그인된 사용자만 특정 URL에 접근할 수 있도록 필터링하는 역할을 수행한다.
 //인증이 필요한 URL에 대한 요청이 들어올 때 세션에 userId가 존재하는지 확인하고
@@ -21,9 +23,7 @@ public class LoginFilter implements Filter {
 
     // 인증을 하지 않아도될 URL Path 배열
     // 회원가입, 로그인, 로그아웃, 로그인 안한 상태의 게시물 조회는 인증을 할 필요가 없다.
-    private static final String[] WHITE_LIST = {"/", "/api/posts", "/api/users/signup", "/api/posts/likesort",
-        "/api/users/login",
-        "/api/users/logout"};
+    private static final String[] WHITE_LIST = {"/currency/api/users","/currency/api/auth/login","/currency/api/auth/logout"};
 
     @Override
     public void doFilter(
@@ -46,8 +46,7 @@ public class LoginFilter implements Filter {
 
             // 로그인 확인 -> 로그인하면 session에 값이 저장되어 있다는 가정.
             // 세션이 존재하면 가져온다. 세션이 없으면 session = null
-            HttpSession session = httpRequest.getSession(false);
-
+            HttpSession session = httpRequest.getSession();
             // 로그인하지 않은 사용자인 경우
             if (session == null || session.getAttribute("userId") == null) {
                 // JSON 형태의 응답 작성
