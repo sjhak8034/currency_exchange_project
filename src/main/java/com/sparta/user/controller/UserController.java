@@ -26,8 +26,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody @Valid SignupRequestDto body, HttpServletRequest request){
         HttpSession session = request.getSession(false);
-        if(session.getAttribute("userId") != null){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그아웃 해주세요");
+        if(session != null) {
+            if (session.getAttribute("userId") != null) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그아웃 해주세요");
+            }
         }
         userService.save(new SignUpServiceDto(body.getEmail(),body.getPassword(),body.getUserName()));
         return ResponseEntity.ok().build();
