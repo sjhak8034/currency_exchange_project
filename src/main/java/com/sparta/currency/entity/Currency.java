@@ -4,11 +4,14 @@ import com.sparta.common.entity.TimeBase;
 import com.sparta.record.entity.ExchangeRecord;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
@@ -30,10 +33,11 @@ public class Currency extends TimeBase {
     private String symbol;
 
     @Column(nullable = false)
-    @Size(min = 0)
+    @DecimalMin(value = "0.0", inclusive = false)
+    @Digits(integer = 8, fraction = 2)
     private BigDecimal exchangeRate;
 
-    @OneToMany(mappedBy = "currency")
+    @OneToMany(mappedBy = "currency", fetch = FetchType.LAZY)
     private List<ExchangeRecord> exchangeRecords;
 
     public Currency(String currencyName, BigDecimal exchangeRate, String symbol) {
