@@ -9,6 +9,9 @@ import com.sparta.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Service
 @RequiredArgsConstructor
 public class AdminService {
@@ -21,7 +24,7 @@ public class AdminService {
     }
 
     public void saveCurrency(SaveCurrencyServiceDto dto) {
-        Currency currency = new Currency(dto.getCurrencyName(),dto.getExchangeRate(),dto.getCurrencySymbol());
+        Currency currency = new Currency(dto.getCurrencyName(), dto.getExchangeRate().setScale(2, RoundingMode.HALF_UP),dto.getCurrencySymbol());
         currencyRepository.save(currency);
     }
 }
