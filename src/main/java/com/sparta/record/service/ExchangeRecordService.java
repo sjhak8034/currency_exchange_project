@@ -26,16 +26,28 @@ public class ExchangeRecordService {
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
 
+    /**
+     * 유저의 거래량을 조회하는 서비스 메소드
+     * @param dto
+     * @return
+     */
     @Transactional
     public FindAmountResponseDto findAmount(FindAmountServiceDto dto) {
         List<Object[]> countAndAmount = exchangeRecordRepository.findAmountByUserId(dto.getUserId());
+        // 조회된 데이터가 없을경우 0을 넣어 전달
         if (countAndAmount == null || countAndAmount.size() == 0) {
             return new FindAmountResponseDto(0L, BigDecimal.valueOf(0));
         }
         return new FindAmountResponseDto((Long) countAndAmount.get(0)[0], (BigDecimal) countAndAmount.get(0)[1]);
     }
 
+    /**
+     * 화폐별 거래량 조회를 위한 서비스 메소드 취소된 거래는 제외
+     * @param dto
+     * @return
+     */
     public FindCurrencyDataResponseDto findCurrencyData(FindCurrencyDataServiceDto dto) {
+        // 페이지 자료 생성
         Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), Sort.Direction.DESC, "r.currency.id");
         Page<CurrencyVolumeData> data = exchangeRecordRepository.findAmountByCurrency(pageable);
 

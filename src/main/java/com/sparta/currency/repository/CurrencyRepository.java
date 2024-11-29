@@ -12,14 +12,16 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import java.util.List;
 
+
 @Repository
 public interface CurrencyRepository extends JpaRepository<Currency, Long> {
+    // 식별자를 통한 화폐 조회 못찾을 경우 예외처리
     default Currency findByIdOrElseThrow(Long id) {
         return findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,"Currency not found")
         );
     }
-
+    // 모든 환율정보를 dto에 필요한 정보를 담아 전달
     @Query(value = "select new com.sparta.currency.dto.findall.FindAllCurrencyResponseDto(c.id,c.currencyName,c.symbol,c.exchangeRate) from Currency c")
     List<FindAllCurrencyResponseDto> findAllCurrencyData();
 }

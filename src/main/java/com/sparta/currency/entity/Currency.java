@@ -27,10 +27,10 @@ public class Currency extends TimeBase {
     @Column(name = "currency_id")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String currencyName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String symbol;
 
     @Column(nullable = false)

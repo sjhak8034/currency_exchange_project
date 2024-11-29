@@ -24,12 +24,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
     private final AdminService adminService;
 
+    /**
+     * 화폐를 추가하는 기능의 엔드포인트
+     * @param body 화폐 정보
+     * @param request session 정보를 가져옴
+     * @return
+     */
     @PostMapping("/currencies")
     public ResponseEntity<Void> saveCurrency(@RequestBody @Valid SaveCurrencyRequestDto body, HttpServletRequest request) {
        adminService.saveCurrency(new SaveCurrencyServiceDto(body.getCurrencyName(),body.getCurrencySymbol(),body.getExchangeRate()));
        return ResponseEntity.ok().build();
     }
 
+    /**
+     * 유저를 hard delete 하는 기능의 엔드포인트
+     * @param body 삭제하기 위한 유저의 식별자
+     * @param request session 정보를 가져옴
+     * @return
+     */
     @DeleteMapping("/users")
     public ResponseEntity<Void> hardDeleteUser(@RequestBody @Valid HardDeleteUserRequestDto body, HttpServletRequest request) {
         adminService.hardDeleteUser(new HardDeleteUserServiceDto(body.getUserId()));
