@@ -32,9 +32,9 @@ public class AdminController {
      * @return
      */
     @PostMapping("/currencies")
-    public String saveCurrencyFromAdmin(@RequestBody @Valid SaveCurrencyRequestDto body, HttpServletRequest request) {
+    public ResponseEntity<Void> saveCurrencyFromAdmin(@RequestBody @Valid SaveCurrencyRequestDto body, HttpServletRequest request) {
        adminService.saveCurrency(new SaveCurrencyServiceDto(body.getCurrencyName(),body.getCurrencySymbol(),body.getExchangeRate()));
-       return "OK";
+       return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /**
