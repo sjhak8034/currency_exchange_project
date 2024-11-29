@@ -27,9 +27,6 @@ public class AdminFilter implements Filter {
         this.userRepository = userRepository;
     }
 
-
-    // 인증을 하지 않아도될 URL Path 배열
-    // 회원가입, 로그인, 로그아웃, 로그인 안한 상태의 게시물 조회는 인증을 할 필요가 없다.
     private static final String[] BLACKLIST = {"/currency/api/admin/*"};
 
     @Override
@@ -39,27 +36,22 @@ public class AdminFilter implements Filter {
             FilterChain chain
     ) throws IOException, ServletException {
 
-
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String requestURI = httpRequest.getRequestURI();
 
         log.info("admin filter 실행");
 
-
         if (isBlackList(requestURI)) {
 
 
             HttpSession session = httpRequest.getSession(false);
             User user = userRepository.findByIdOrElseThrow((long)session.getAttribute("userId"));
-            if (user.getRole() == User.Role.ROLE_ADMIN){
-                chain.doFilter(request, response);
-            }
-            else {
+            if (user.getRole() != User.Role.ROLE_ADMIN){
                 return;
             }
-        }
 
+        }
 
         chain.doFilter(request, response);
     }
