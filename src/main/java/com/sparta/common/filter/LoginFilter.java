@@ -23,7 +23,7 @@ public class LoginFilter implements Filter {
 
     // 인증을 하지 않아도될 URL Path 배열
     // 회원가입, 로그인, 로그아웃, 로그인 안한 상태의 게시물 조회는 인증을 할 필요가 없다.
-    private static final String[] WHITE_LIST = {"/currency/api/users","/currency/api/auth/login","/currency/api/auth/logout"};
+    private static final String[] WHITE_LIST = {"/currency/api/auth/register","/currency/api/auth/login","/currency/api/auth/logout"};
 
     @Override
     public void doFilter(

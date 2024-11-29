@@ -10,6 +10,7 @@ import com.sparta.currency.service.CurrencyService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.Mapping;
@@ -31,9 +32,9 @@ public class AdminController {
      * @return
      */
     @PostMapping("/currencies")
-    public ResponseEntity<Void> saveCurrency(@RequestBody @Valid SaveCurrencyRequestDto body, HttpServletRequest request) {
+    public String saveCurrencyFromAdmin(@RequestBody @Valid SaveCurrencyRequestDto body, HttpServletRequest request) {
        adminService.saveCurrency(new SaveCurrencyServiceDto(body.getCurrencyName(),body.getCurrencySymbol(),body.getExchangeRate()));
-       return ResponseEntity.ok().build();
+       return "OK";
     }
 
     /**
