@@ -4,14 +4,14 @@ import com.sparta.common.entity.TimeBase;
 import com.sparta.record.entity.ExchangeRecord;
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.hibernate.validator.constraints.Length;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "user")
+@Table(name = "users")
 public class User extends TimeBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +30,12 @@ public class User extends TimeBase {
     @Column
     private Boolean isDeleted = false;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.ROLE_USER;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ExchangeRecord> exchangeRecords = new ArrayList<>();
-
 
     public User(String name, String email, String password) {
         this.name = name;
@@ -54,5 +56,14 @@ public class User extends TimeBase {
         this.password = newPassword;
     }
 
-    protected User() {}
+    public void admin() {
+        this.role = Role.ROLE_ADMIN;
+    }
+
+    protected User() {
+    }
+
+    public enum Role {
+        ROLE_USER, ROLE_ADMIN
+    }
 }

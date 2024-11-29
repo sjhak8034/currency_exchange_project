@@ -25,25 +25,8 @@ public class UserController {
 
     private final UserService userService;
 
-    /**
-     * 회원 가입 기능의 엔드포인트
-     * @param body 유저의 회원가입 정보
-     * @param request 유저의 로그인 정보
-     * @return
-     */
-    @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody @Valid SignupRequestDto body, HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        // 이미 로그인 되어있을경우 로그아웃 요청
-        if(session != null) {
-            if (session.getAttribute("userId") != null) {
-                System.out.println(session.getAttribute("userId"));
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그아웃 해주세요");
-            }
-        }
-        userService.save(new SignUpServiceDto(body.getEmail(),body.getPassword(),body.getUserName()));
-        return ResponseEntity.ok().build();
-    }
+
+
 
     /**
      * 유저 회원정보 수정을 기능의 엔드포인트

@@ -12,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -44,6 +45,7 @@ public class DataInitializer {
 
         // 관리자 등록
         User admin = new User("admin","admin@admin.com",passwordEncoder.encode("Admin@!"));
+        admin.admin();
         userRepository.save(admin);
     }
 

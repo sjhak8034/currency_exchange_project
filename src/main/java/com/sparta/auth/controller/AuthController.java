@@ -3,6 +3,9 @@ package com.sparta.auth.controller;
 import com.sparta.auth.dto.LoginRequestDto;
 import com.sparta.auth.dto.LoginServiceDto;
 import com.sparta.auth.service.AuthService;
+import com.sparta.user.dto.signup.SignUpServiceDto;
+import com.sparta.user.dto.signup.SignupRequestDto;
+import com.sparta.user.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
-
+    private final UserService userService;
     /**
      * 로그인 기능을 하는 엔드포인트
      * @param body 로그인에 필요한 정보를 담은 body
@@ -58,6 +61,25 @@ public class AuthController {
         if (session != null) {
             session.invalidate();
         }
+        return ResponseEntity.ok().build();
+    }
+    /**
+     * 회원 가입 기능의 엔드포인트
+     * @param body 유저의 회원가입 정보
+     * @param request 유저의 로그인 정보
+     * @return
+     */
+    @PostMapping("/register")
+    public ResponseEntity<Void> createUser(@RequestBody @Valid SignupRequestDto body, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        // 이미 로그인 되어있을경우 로그아웃 요청
+        if(session != null) {
+            if (session.getAttribute("userId") != null) {
+                System.out.println(session.getAttribute("userId"));
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그아웃 해주세요");
+            }
+        }
+        userService.save(new SignUpServiceDto(body.getEmail(),body.getPassword(),body.getUserName()));
         return ResponseEntity.ok().build();
     }
 
