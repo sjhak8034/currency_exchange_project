@@ -28,6 +28,13 @@ import java.util.List;
 public class CurrencyController {
     private final CurrencyService currencyService;
 
+    /**
+     * 환전 기능의 엔드포인트
+     * @param currencyId  환전할 화폐 식별자
+     * @param body 유저가 환전을 하기위해 담은 정보
+     * @param request 유저의 로그인 정보 이를 통해 식별자를 가져온다
+     * @return
+     */
     @PostMapping("{currencyId}/exchange")
     public ResponseEntity<ExchangeResponseDto> exchange (@PathVariable("currencyId") Long currencyId
             , @RequestBody @Valid ExchangeRequestDto body, HttpServletRequest request) {
@@ -37,6 +44,12 @@ public class CurrencyController {
         return ResponseEntity.ok(responseDto);
     }
 
+    /**
+     * 환전 취소 기능의 엔드포인트
+     * @param currencyId 화폐 식별자
+     * @param request 유저 로그인 정보
+     * @return
+     */
     @PutMapping("{currencyId}/exchange")
     public ResponseEntity<CancelExchangeResponseDto> cancelExchange (@PathVariable("currencyId") Long currencyId
             , HttpServletRequest request) {
@@ -45,8 +58,12 @@ public class CurrencyController {
         return ResponseEntity.ok(currencyService.cancel(serviceDto));
     }
 
+    /**
+     * 모든 환율 정보를 조회하는 메소드
+     * @return
+     */
     @GetMapping("")
-    public ResponseEntity<List<FindAllCurrencyResponseDto>> cancelExchange () {
+    public ResponseEntity<List<FindAllCurrencyResponseDto>> findAllCurrencies () {
         return ResponseEntity.ok(currencyService.findAllCurrency());
     }
 

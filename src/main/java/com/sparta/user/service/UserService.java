@@ -51,6 +51,7 @@ public class UserService {
      */
     public void delete(DeleteUserServiceDto dto) {
         User deletalbeUser = userRepository.findByIdOrElseThrow(dto.getId());
+        // 유저 비밀번호가 다를경우 예외처리
         if(!passwordEncoder.matches(dto.getPassword(), deletalbeUser.getPassword())){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
         }

@@ -26,18 +26,31 @@ import java.util.Objects;
 public class ExchangeRecordController {
     private final ExchangeRecordService exchangeRecordService;
 
+    /**
+     * 유저의 거래량을 조회하는 엔드포인트
+     * @param userId
+     * @param request
+     * @return
+     */
     @GetMapping("/{userId}")
     public ResponseEntity<FindAmountResponseDto> getExchangeRecord(@PathVariable Long userId
             , HttpServletRequest request) {
         HttpSession session = request.getSession(false);
+        // 유저의 로그인 정보와 유저 id가 일치하는지 확인
         if (!Objects.equals((Long) session.getAttribute("userId"), userId)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         return ResponseEntity.ok(exchangeRecordService.findAmount(new FindAmountServiceDto(userId)));
     }
 
+    /**
+     * 화폐별 총 거래량을 조회하는 엔드포인트
+     * @param page 조회할 페이지
+     * @param pageSize 조회할 페이지당 크기
+     * @return
+     */
     @GetMapping("")
-    public ResponseEntity<FindCurrencyDataResponseDto> getExchangeRecord(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+    public ResponseEntity<FindCurrencyDataResponseDto> getAllExchangeRecord(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
 
         return ResponseEntity.ok(exchangeRecordService.findCurrencyData(new FindCurrencyDataServiceDto(page-1,pageSize)));
     }

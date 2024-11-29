@@ -18,11 +18,19 @@ public class AdminService {
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
 
+    /**
+     * 유저를 hard delete 하는 기능의 서비스 메소드
+     * @param dto
+     */
     public void hardDeleteUser(HardDeleteUserServiceDto dto) {
         User user = userRepository.findByIdOrElseThrow(dto.getUserId());
         userRepository.delete(user);
     }
 
+    /**
+     * 화폐를 저장하는 기능의 서비스 메소드
+     * @param dto
+     */
     public void saveCurrency(SaveCurrencyServiceDto dto) {
         Currency currency = new Currency(dto.getCurrencyName(), dto.getExchangeRate().setScale(2, RoundingMode.HALF_UP),dto.getCurrencySymbol());
         currencyRepository.save(currency);
