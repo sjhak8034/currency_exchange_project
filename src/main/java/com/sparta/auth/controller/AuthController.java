@@ -55,7 +55,7 @@ public class AuthController {
      * @return
      */
     @PostMapping("/logout")
-    public ResponseEntity<Void> login(HttpServletRequest request) {
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         // 세션을 비활성화 함
         if (session != null) {
