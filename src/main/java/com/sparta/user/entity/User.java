@@ -34,7 +34,7 @@ public class User extends TimeBase {
     @Column(nullable = false)
     private Role role = Role.ROLE_USER;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ExchangeRecord> exchangeRecords = new ArrayList<>();
 
     public User(String name, String email, String password) {

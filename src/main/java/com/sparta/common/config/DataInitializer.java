@@ -6,8 +6,10 @@ import com.sparta.currency.repository.CurrencyRepository;
 import com.sparta.currency.service.CurrencyService;
 import com.sparta.record.entity.ExchangeRecord;
 import com.sparta.record.repository.ExchangeRecordRepository;
+import com.sparta.user.dto.signup.SignUpServiceDto;
 import com.sparta.user.entity.User;
 import com.sparta.user.repository.UserRepository;
+import com.sparta.user.service.UserService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.servlet.http.HttpSession;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,6 +33,7 @@ public class DataInitializer {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CurrencyService currencyService;
+    private final UserService userService;
     private final List<HttpSession> sessions;
 
     /**
@@ -52,9 +56,8 @@ public class DataInitializer {
         User admin = new User("admin","admin@admin.com",passwordEncoder.encode("Admin@!"));
         admin.admin();
         userRepository.save(admin);
-//        for(int i = 0; i < 1000; i++ ){
-//            User user = new User("user"+i, "user"+i+"@user.com", passwordEncoder.encode("User@12345"+i));
-//            userRepository.save(user);
+//        for(int i = 0; i < 100; i++ ){
+//            userService.save(new SignUpServiceDto("user"+i+"@user.com","User@!12345"+i,"user"+i));
 //        }
 //        for(User user : userRepository.findAll()){
 //            for(int i = 0; i < 1000; i++ ){
