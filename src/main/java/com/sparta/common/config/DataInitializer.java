@@ -1,7 +1,11 @@
 package com.sparta.common.config;
 
+import com.sparta.currency.dto.exchange.ExchangeServiceDto;
 import com.sparta.currency.entity.Currency;
 import com.sparta.currency.repository.CurrencyRepository;
+import com.sparta.currency.service.CurrencyService;
+import com.sparta.record.entity.ExchangeRecord;
+import com.sparta.record.repository.ExchangeRecordRepository;
 import com.sparta.user.entity.User;
 import com.sparta.user.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -25,6 +29,7 @@ public class DataInitializer {
     private final CurrencyRepository currencyRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CurrencyService currencyService;
     private final List<HttpSession> sessions;
 
     /**
@@ -47,6 +52,19 @@ public class DataInitializer {
         User admin = new User("admin","admin@admin.com",passwordEncoder.encode("Admin@!"));
         admin.admin();
         userRepository.save(admin);
+//        for(int i = 0; i < 1000; i++ ){
+//            User user = new User("user"+i, "user"+i+"@user.com", passwordEncoder.encode("User@12345"+i));
+//            userRepository.save(user);
+//        }
+//        for(User user : userRepository.findAll()){
+//            for(int i = 0; i < 1000; i++ ){
+//                currencyService.exchange(new ExchangeServiceDto(1L,BigDecimal.valueOf(312*i),user.getId()));
+//                currencyService.exchange(new ExchangeServiceDto(2L,BigDecimal.valueOf(312*i),user.getId()));
+//                currencyService.exchange(new ExchangeServiceDto(3L,BigDecimal.valueOf(312*i),user.getId()));
+//                currencyService.exchange(new ExchangeServiceDto(4L,BigDecimal.valueOf(312*i),user.getId()));
+//            }
+//        }
+
     }
 
 
